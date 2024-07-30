@@ -1,0 +1,21 @@
+name: "Check Chart Version Upgrade"
+description: "Action to check if a chart version upgrade was made in the PR"
+inputs:
+  prNumber:
+    description: "The PR number to check for version upgrade"
+    required: true
+  repoName:
+    description: "The name of the repository"
+    required: true
+outputs:
+  versionUpgrade:
+      description: "Whether a version upgrade was made in the PR"
+      required: true
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.chart }}
+    - ${{ inputs.prNumber }}
+    - ${{ inputs.githubToken }}
