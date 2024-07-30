@@ -1,0 +1,18 @@
+{
+  "name": "check-chart-version-upgrade",
+  "version": "1.0.0",
+  "description": "This action checks if a chart has a new version available.",
+  "main": "check-pr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "@octokit/rest": "^21.0.1",
+    "octokit": "^4.0.2"
+  }
+}

@@ -7,13 +7,9 @@ inputs:
   repoName:
     description: "The name of the repository"
     required: true
-outputs:
-  versionUpgrade:
-      description: "Whether a version upgrade was made in the PR"
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: 'node20'
+  image: "dist/index.mjs"
   args:
-    - ${{ inputs.chart }}
     - ${{ inputs.prNumber }}
     - ${{ inputs.githubToken }}
