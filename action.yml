@@ -10,7 +10,6 @@ inputs:
 outputs:
   versionUpgrade:
       description: "Whether a version upgrade was made in the PR"
-      required: false
 runs:
   using: "docker"
   image: "Dockerfile"
