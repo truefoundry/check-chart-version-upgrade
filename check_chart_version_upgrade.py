@@ -1,6 +1,7 @@
 import requests
 import os
 
+# Function to get the files changed in a pull request
 def get_files_changed(repo, pull_request_number):
     headers = {'Accept': 'application/vnd.github.v3+json'}
     api_url = f"https://api.github.com/repos/{repo}/pulls/{pull_request_number}/files"
@@ -17,9 +18,11 @@ def get_files_changed(repo, pull_request_number):
 
     return files_changed_data
 
+# Function to get the filenames from the files changed data
 def get_filenames(files_changed_data):
     return [file['filename'] for file in files_changed_data]
 
+# Function to get the charts directories changed
 def get_charts_dirs_changed(files_changed):
     dirs = set()
     for file in files_changed:
@@ -29,16 +32,16 @@ def get_charts_dirs_changed(files_changed):
             dirs.add(chart_dir)
     return sorted(dirs)
 
+# Function to count the number of charts changed
 def count_charts_changed(charts_dirs_changed):
     return sum(1 for chart_dir in charts_dirs_changed if "charts" in chart_dir)
 
+# Function to count the number of version bumps
 def count_version_bumps(files_changed_data):
     return sum(1 for file in files_changed_data if file['filename'].endswith("Chart.yaml") and "+version" in file['patch'])
 
 
 if __name__ == "__main__":
-
-    # get variables
     GITHUB_REPOSITORY = os.environ.get('INPUT_REPONAME')
     PULL_REQUEST_NUMBER = os.environ.get('INPUT_PRNUMBER')
 
