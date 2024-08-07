@@ -7,6 +7,10 @@ inputs:
   repoName:
     description: "The name of the repository"
     required: true
+  ignorePaths:
+    description: "Paths to ignore in the diff"
+    required: false
+    default: ""
 runs:
   using: 'node20'
   main: "dist/index.mjs"
