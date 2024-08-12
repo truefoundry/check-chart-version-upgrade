@@ -37186,12 +37186,18 @@ function getFilenames(filesChangedData) {
     return filesChangedData.map(file => file.filename);
 }
 
+// Function to check if a file path matches any of the ignore paths list
+function isIgnoredPath(filepath, ignorePaths) {
+    return ignorePaths.some(ignorePath => filepath.includes(ignorePath));
+}
+
+
 // Function to get the charts directories changed
-function getChartsDirsChanged(filesChanged) {
+function getChartsDirsChanged(filesChanged, ignorePaths) {
     const dirs = new Set();
     filesChanged.forEach(file => {
         const dirname = external_path_.dirname(file);
-        if (dirname.includes("charts")) {
+        if (dirname.includes("charts") && !isIgnoredPath(dirname, ignorePaths)) {
             const chartDir = dirname.split("/").slice(0, 2).join("/");
             dirs.add(chartDir);
         }
@@ -37216,14 +37222,17 @@ function countVersionBumps(filesChangedData) {
 }
 
 async function main() {
-    console.log("Checking if charts were changed and version bumps were found...");
+    console.log("Checking if charts were changed and version bumps were found ...");
 
     const GITHUB_REPOSITORY = core.getInput('repoName');
     const PULL_REQUEST_NUMBER = core.getInput('prNumber');
+    const IGNORE_PATHS = core.getMultilineInput('ignorePaths', { required: false });
+
+    console.log("Ignore Paths:", IGNORE_PATHS)
 
     const filesChangedData = await getFilesChanged(GITHUB_REPOSITORY, PULL_REQUEST_NUMBER);
     const filesChanged = getFilenames(filesChangedData);
-    const chartsDirsChanged = getChartsDirsChanged(filesChanged);
+    const chartsDirsChanged = getChartsDirsChanged(filesChanged, IGNORE_PATHS);
     const numChartsChanged = countChartsChanged(chartsDirsChanged);
     const numVersionBumps = countVersionBumps(filesChangedData);
 

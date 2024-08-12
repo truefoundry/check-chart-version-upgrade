@@ -73,7 +73,7 @@ function countVersionBumps(filesChangedData) {
 }
 
 async function main() {
-    console.log("Checking if charts were changed and version bumps were found...");
+    console.log("Checking if charts were changed and version bumps were found ...");
 
     const GITHUB_REPOSITORY = core.getInput('repoName');
     const PULL_REQUEST_NUMBER = core.getInput('prNumber');
