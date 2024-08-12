@@ -37,10 +37,11 @@ function getFilenames(filesChangedData) {
     return filesChangedData.map(file => file.filename);
 }
 
-// Function to check if a file path matches any of the ignore paths
-function isIgnoredPath(filePath, ignorePaths) {
-    return ignorePaths.some(ignorePath => filePath.startsWith(ignorePath));
+// Function to check if a file path matches any of the ignore paths list
+function isIgnoredPath(filepath, ignorePaths) {
+    return ignorePaths.some(ignorePath => filepath.includes(ignorePath));
 }
+
 
 // Function to get the charts directories changed
 function getChartsDirsChanged(filesChanged, ignorePaths) {
@@ -76,7 +77,9 @@ async function main() {
 
     const GITHUB_REPOSITORY = core.getInput('repoName');
     const PULL_REQUEST_NUMBER = core.getInput('prNumber');
-    const IGNORE_PATHS = core.getInput('ignorePaths').split(',');
+    const IGNORE_PATHS = core.getMultilineInput('ignorePaths', { required: false });
+
+    console.log("Ignore Paths:", IGNORE_PATHS)
 
     const filesChangedData = await getFilesChanged(GITHUB_REPOSITORY, PULL_REQUEST_NUMBER);
     const filesChanged = getFilenames(filesChangedData);
