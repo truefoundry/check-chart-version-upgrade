@@ -63,9 +63,11 @@ function countChartsChanged(chartsDirsChanged) {
 }
 
 // Function to count the number of version bumps
-function countVersionBumps(filesChangedData) {
+function countVersionBumps(filesChangedData, ignorePaths) {
     return filesChangedData.reduce((count, file) => {
-        if (file.filename.endsWith("Chart.yaml") && file.patch.includes("+version")) {
+        if (isIgnoredPath(file.filename, ignorePaths)) {
+            return count;
+        } else if (file.filename.endsWith("Chart.yaml") && file.patch.includes("+version")) {
             count += 1;
         }
         return count;
@@ -85,7 +87,7 @@ async function main() {
     const filesChanged = getFilenames(filesChangedData);
     const chartsDirsChanged = getChartsDirsChanged(filesChanged, IGNORE_PATHS);
     const numChartsChanged = countChartsChanged(chartsDirsChanged);
-    const numVersionBumps = countVersionBumps(filesChangedData);
+    const numVersionBumps = countVersionBumps(filesChangedData, IGNORE_PATHS);
 
     console.log("Files Changed:", filesChanged);
     console.log("Charts Dirs Changed:", chartsDirsChanged);
